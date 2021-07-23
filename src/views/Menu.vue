@@ -1,58 +1,45 @@
 <template>
-  <div class="section-sell-category section-sell-category--beige">
+  <app-loader v-if="loading"></app-loader>
+  <div class="section-sell-category section-sell-category--beige" v-else>
     <div class="section-inner">
       <div class="title">
-        {{ title }}
+        {{ category.title }}
       </div>
       <div class="section-sell-category-items">
-        <div class="section-sell-category-item section-sell-category-item--beige" v-for="(item, idx) in menu.listItems" :key="idx">
-          <div class="section-sell-category-item-inner">
-            <div class="section-sell-category-item__img">
-              <img src="img/sell-category/burger-item.jpg" alt="">
-            </div>
-            <div class="section-sell-category-item__title">
-              {{ item.name }}
-            </div>
-            <div class="section-sell-category-item__description">
-              {{ item.description }}
-            </div>
-            <div class="section-sell-category-item__radios">
-              <div class="section-sell-category-item__radio" v-for="option in item.options" :key="option.size">
-                <label>
-                  <input type="radio" :name="item.name" :value="option.price" class="radio">
-                  <span class="radio__text">{{ option.price + option.size }}</span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="section-sell-category-item__price-and-button">
-            <div class="section-sell-category-item__price">$ 20.20</div>
-            <label class="section-sell-category-item__button">
-              <input type="checkbox" class="section-sell-category-item__button-checkbox">
-              <span class="section-sell-category-item__button-text">Добавить в корзину</span>
-            </label>
-          </div>
-        </div>
+        <menu-item :product="product" v-for="product in products" :key="product.name"></menu-item>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import MenuItem from '@/components/menu/MenuItem'
+import AppLoader from '@/components/ui/AppLoader'
 
 export default {
-  props: ['productName'],
+  components: { AppLoader, MenuItem },
+  props: ['curMenu'],
   setup(props) {
-    const ucFirst = str => str.charAt(0).toUpperCase() + str.slice(1)
     const store = useStore()
-    const menu = computed(() => store.state.products.find(el => el.listTitle === props.productName))
-    console.log(menu.value.listTitle)
+    const category = computed(() => store.getters.categoryByPath(props.curMenu))
+    const products = computed(() => store.getters['products/products'].filter(el => el.category === props.curMenu))
+    const loading = ref(true)
+
+    onMounted(async () => {
+      loading.value = true
+      await Promise.all([
+        store.dispatch('loadCategories'),
+        store.dispatch('products/loadProducts')
+      ])
+      loading.value = false
+    })
 
     return {
-      menu,
-      title: computed(() => ucFirst(menu.value.listTitle))
+      category,
+      products,
+      loading
     }
   }
 }

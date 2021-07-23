@@ -1,18 +1,44 @@
 <template>
-  <other-links></other-links>
-  <div class="scroll scroll--active">
+  <navbar-links></navbar-links>
+  <div class="scroll" :class="{ 'scroll--inactive': !showNavbar, 'scroll--active' : showNavbar }">
     <navbar-info></navbar-info>
-    <navbar-products></navbar-products>
+    <navbar-categories></navbar-categories>
   </div>
 </template>
 
 <script>
-import OtherLinks from '@/components/navbar/OtherLinks'
+import NavbarLinks from '@/components/navbar/NavbarLinks'
 import NavbarInfo from '@/components/navbar/NavbarInfo'
-import NavbarProducts from '@/components/navbar/MenuNav'
+import NavbarCategories from '@/components/navbar/NavbarCategories'
+import { onMounted, ref } from 'vue'
 
 export default {
-  components: { NavbarProducts, NavbarInfo, OtherLinks }
+  setup() {
+    const showNavbar = ref(true)
+    let prevPos = 0
+
+    const hide = () => {
+      const navbarHeight = 203
+      const curPos = window.pageYOffset
+
+      if (curPos > navbarHeight && curPos < prevPos) {
+        showNavbar.value = true
+      } else if (curPos > navbarHeight && curPos > prevPos) {
+        showNavbar.value = false
+      }
+
+      prevPos = curPos
+    }
+
+    onMounted(() => {
+      window.addEventListener('scroll', hide)
+    })
+
+    return {
+      showNavbar
+    }
+  },
+  components: { NavbarCategories, NavbarInfo, NavbarLinks }
 }
 </script>
 

@@ -4,41 +4,53 @@
       <div class="section-header-main-logo">
         <mobile-menu></mobile-menu>
         <div class="logo-img">
-          <img src="../../assets/logo.png" alt="">
+          <img src="../../assets/logo.png" alt="Logo">
         </div>
-        <div class="section-header-main-text">Shop name</div>
+        <div class="section-header-main-text">foodleggers</div>
       </div>
-      <a href="tel:+1554443333" class="section-header-main-tel">
+      <a href="tel:+79069632021" class="section-header-main-tel">
         <svg class="tel">
           <use xlink:href="#tel"></use>
         </svg>
         <div class="section-header-main-tel-text">
-          +1 555 444 3333
+          +7 906 963 2021
         </div>
       </a>
-      <a href="mailto:demo-store@example.com" class="section-header-main-mail">
+      <a href="mailto:dmakbabain@gmail.com" class="section-header-main-mail">
         <svg class="mail">
           <use xlink:href="#mail"></use>
         </svg>
         <div class="section-header-main-mail-text">
-          demo-store@example.com
+          makbabain@gmail.com
         </div>
       </a>
-      <div class="section-header-main-shopping-cart">
+      <router-link to="/cart" style="text-decoration: none" class="section-header-main-shopping-cart">
         <svg class="shopping-cart">
           <use xlink:href="#shopping-cart"></use>
         </svg>
-        <div class="section-header-main-shopping-cart-text">
-          100 324 ₽
+        <div class="section-header-main-shopping-cart-text" v-if="cartPrice">
+          {{ cartPrice }} ₽
         </div>
-      </div>
+        <div class="section-header-main-shopping-cart-text--empty" v-else>
+          Корзина пуста
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import MobileMenu from '@/components/navbar/MobileMenu'
+import MobileMenu from '@/components/navbar/NavbarMobile'
+import { useStore } from 'vuex'
+import { computed } from 'vue'
 export default {
+  setup() {
+    const store = useStore()
+
+    return {
+      cartPrice: computed(() => store.getters['cart/cartPrice'])
+    }
+  },
   components: { MobileMenu }
 }
 </script>
