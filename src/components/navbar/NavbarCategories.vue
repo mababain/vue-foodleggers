@@ -17,8 +17,6 @@ export default {
     const store = useStore()
     const categories = computed(() => store.getters.categories)
 
-    console.log(categories)
-
     return {
       categories
     }

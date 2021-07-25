@@ -1,19 +1,20 @@
 
 <template>
-  <span class="section-cart-item__count-minus"></span>
-  <input type="number" class="section-cart-item__count-input" v-model="count">
-  <span class="section-cart-item__count-plus"></span>
+  <span class="section-cart-item__count-minus" @click="$emit('decrementQuantity')"></span>
+  <input type="number" min="1" class="section-cart-item__count-input" v-model="count" @input="$emit('inputQuantity', count)">
+  <span class="section-cart-item__count-plus" @click="$emit('incrementQuantity')"></span>
 </template>
 
 <script>
 import { ref, watch } from 'vue'
 
 export default {
-  props: ['countValue'],
+  emits: ['incrementQuantity', 'decrementQuantity', 'inputQuantity'],
+  props: ['quantity'],
   setup(props) {
-    const count = ref(props.countValue)
+    const count = ref(props.quantity)
     watch(count, () => {
-      if (count.value < 0) {
+      if (count.value < 0 || !count.value) {
         count.value = 1
       } else if (count.value > 999) {
         count.value = 999

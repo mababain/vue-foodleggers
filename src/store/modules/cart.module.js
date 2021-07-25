@@ -1,5 +1,3 @@
-import { isIdsSample } from '@/utils/isIdsSample'
-
 export default {
   namespaced: true,
   state() {
@@ -12,23 +10,58 @@ export default {
   },
   mutations: {
     addInCart(state, product) {
-      const res = state
+      const item = state
         .cart
         .items
-        .find(el => isIdsSample(el, product))
-      if (res) {
-        state.cart.items = state.cart.items.map(el => {
-          return isIdsSample(el, product)
-            ? { ...el, count: ++el.count }
-            : el
-        })
+        .find(el => el.id === product.id)
+      if (item) {
+        item.quantity++
       } else {
         state.cart.items.push(product)
       }
-      state.cart.price += product.options.price
+      state.cart.price += +product.options.price
     },
-    incrementCounter(state, id) {
+    removeOneFromCart(state, product) {
+      const item = state.cart.items.find(el => el.id === product.id)
 
+      if (item) {
+        if (item.quantity > 1) {
+          item.quantity--
+        }
+      }
+      state.cart.price -= +product.options.price
+    },
+    changeProductQuantity(state, payload) {
+      const item = state.cart.items.find(el => el.id === payload.product.id)
+
+      if (item) {
+        const costDifference = Number(payload.value * item.options.price) - Number(item.options.price * item.quantity)
+        item.quantity = payload.value
+        state.cart.price += costDifference
+      }
+    },
+    addComment(state, product) {
+      let item = state.cart.items.find(el => el.id === product.id)
+
+      console.log(product)
+
+      if (item) {
+        item = { ...product }
+      }
+    }
+  },
+  actions: {
+    addInCart({ commit }, product) {
+      commit('addInCart', product)
+    },
+    removeOneFromCart({ commit }, product) {
+      commit('removeOneFromCart', product)
+    },
+    changeProductQuantity({ commit }, payload) {
+      commit('changeProductQuantity', payload)
+    },
+    addComment({ commit }, product) {
+      commit('addComment', product)
     }
   },
   getters: {

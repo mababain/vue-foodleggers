@@ -1,11 +1,11 @@
 <template>
   <app-loader v-if="loading"></app-loader>
-  <div class="section-sell-category section-sell-category--beige" v-else>
+  <div class="section-products section-products--beige" v-else>
     <div class="section-inner">
       <div class="title">
         {{ category.title }}
       </div>
-      <div class="section-sell-category-items">
+      <div class="section-products-items">
         <menu-item :product="product" v-for="product in products" :key="product.name"></menu-item>
       </div>
     </div>
