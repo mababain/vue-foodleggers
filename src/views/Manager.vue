@@ -1,7 +1,9 @@
 <template>
   <app-loader v-if="loading"></app-loader>
   <div class="section-manager-page" v-else>
-    <div class="1">123</div>
+    <div class="section-manager-title">
+      Заказы
+    </div>
   </div>
 </template>
 
