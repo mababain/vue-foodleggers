@@ -3,10 +3,12 @@
     <div class="section-inner">
       <div class="section-header-main-logo">
         <mobile-menu></mobile-menu>
-        <div class="logo-img">
-          <img src="../../assets/logo.png" alt="Logo">
-        </div>
-        <div class="section-header-main-text">foodleggers</div>
+        <router-link to="/" class="section-header-main-logo__inner">
+          <div class="logo-img">
+            <img src="../../assets/logo.png" alt="Logo">
+          </div>
+          <div class="section-header-main-text">foodleggers</div>
+        </router-link>
       </div>
       <a href="tel:+79069632021" class="section-header-main-tel">
         <svg class="tel">

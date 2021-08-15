@@ -8,7 +8,9 @@
       <div class="section-products-items">
         <cart-item v-for="(product, idx) in cart.items" :key="idx" :product="product"></cart-item>
       </div>
-      <button class="cart-apply">Заказать доставку</button>
+      <div class="section-cart-button">
+        <button v-if="cart.items.length" class="cart-apply" @click="makeOrder">Заказать доставку</button>
+      </div>
     </div>
   </div>
 </template>
@@ -18,12 +20,21 @@ import { useStore } from 'vuex'
 import CartItem from '@/components/cart/CartItem'
 import { onMounted, ref } from 'vue'
 import AppLoader from '@/components/ui/AppLoader'
+import { useRouter } from 'vue-router'
 
 export default {
   components: { AppLoader, CartItem },
   setup() {
     const store = useStore()
     const loading = ref(true)
+    const router = useRouter()
+    const cart = store.getters['cart/cart']
+
+    const makeOrder = async () => {
+      await store.dispatch('cart/postOrder', cart)
+      await store.dispatch('cart/clearCart')
+      router.push('/success-order')
+    }
 
     onMounted(async () => {
       loading.value = true
@@ -35,8 +46,9 @@ export default {
     })
 
     return {
-      cart: store.getters['cart/cart'],
-      loading
+      cart,
+      loading,
+      makeOrder
     }
   }
 }

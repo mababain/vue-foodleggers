@@ -4,6 +4,7 @@ import Cart from '@/views/Cart'
 import Manager from '@/views/Manager'
 import ManagerMenu from '@/views/ManagerMenu'
 import ManagerItem from '@/views/ManagerItem'
+import SuccessOrder from '@/views/SuccessOrder'
 
 const routes = [
   {
@@ -64,6 +65,13 @@ const routes = [
     props: true,
     meta: {
       layout: 'manager'
+    }
+  },
+  {
+    path: '/success-order',
+    component: SuccessOrder,
+    meta: {
+      layout: 'shop'
     }
   }
 ]

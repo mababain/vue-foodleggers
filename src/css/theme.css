@@ -46,6 +46,12 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 .section-inner {
     max-width: 1430px;
     width: 100%;
@@ -157,6 +163,12 @@ body {
 
 .section-header-main-logo {
     align-items: center;
+}
+
+.section-header-main-logo__inner {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
 }
 
 .section-header-main-logo img {
@@ -619,6 +631,7 @@ body {
 .section-cart {
     padding-top: 90px;
     padding-bottom: 100px;
+    flex-grow: 3;
 }
 
 .title {
@@ -753,7 +766,8 @@ body {
     font-weight: 700;
 }
 
-.section-products-item__choice-message {
+.section-products-item__choice-message,
+.cart-apply {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     display: flex;
     align-items: center;
@@ -964,6 +978,22 @@ body {
 
 .section-cart .title {
     text-align: center;
+}
+
+.section-cart-button {
+    display: flex;
+    justify-content: center;
+}
+
+.cart-apply {
+    outline: none;
+    border: none;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.cart-apply:hover {
+    color: #ffd710;
 }
 
 .section-cart-item,

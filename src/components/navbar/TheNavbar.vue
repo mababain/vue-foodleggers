@@ -10,14 +10,16 @@
 import NavbarLinks from '@/components/navbar/NavbarLinks'
 import NavbarInfo from '@/components/navbar/NavbarInfo'
 import NavbarCategories from '@/components/navbar/NavbarCategories'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 export default {
   setup() {
+    const route = useRoute()
     const showNavbar = ref(true)
     let prevPos = 0
 
-    const hide = () => {
+    const isScrolled = () => {
       const navbarHeight = 203
       const curPos = window.pageYOffset
 
@@ -30,8 +32,12 @@ export default {
       prevPos = curPos
     }
 
+    watch(route, () => {
+      isScrolled()
+    })
+
     onMounted(() => {
-      window.addEventListener('scroll', hide)
+      window.addEventListener('scroll', isScrolled)
     })
 
     return {

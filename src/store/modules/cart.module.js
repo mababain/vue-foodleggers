@@ -1,3 +1,5 @@
+import axios from '@/axios/request'
+
 export default {
   namespaced: true,
   state() {
@@ -31,6 +33,12 @@ export default {
       }
       state.cart.price -= +product.options.price
     },
+    clearCart(state) {
+      state.cart = {
+        price: 0,
+        items: []
+      }
+    },
     changeProductQuantity(state, payload) {
       const item = state.cart.items.find(el => el.id === payload.product.id)
 
@@ -42,8 +50,6 @@ export default {
     },
     addComment(state, product) {
       let item = state.cart.items.find(el => el.id === product.id)
-
-      console.log(product)
 
       if (item) {
         item = { ...product }
@@ -62,6 +68,12 @@ export default {
     },
     addComment({ commit }, product) {
       commit('addComment', product)
+    },
+    clearCart({ commit }) {
+      commit('clearCart')
+    },
+    async postOrder(_, cart) {
+      await axios.post('/orders.json', cart)
     }
   },
   getters: {
